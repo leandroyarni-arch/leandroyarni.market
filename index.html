@@ -1,0 +1,529 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leandroyarni | Leather Jackets</title>
+<style>
+:root {
+  --blue: #08084b;
+  --yellow: #fff5b3;
+  --peach: #ffe6c8;
+  --ink: #191923;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+}
+button, input, select { font: inherit; }
+button, a { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+button:focus-visible, a:focus-visible {
+  outline: 2px solid #00aeda;
+  outline-offset: 3px;
+}
+header {
+  min-height: 67px;
+  padding: 13px 3%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid #f1eff1;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-name { font-size: 14px; font-weight: 800; }
+.brand-name small {
+  display: block; font-size: 7px; font-weight: 400; margin-top: 4px;
+}
+.slogan { font-size: 7px; white-space: nowrap; }
+.logo-center { font-weight: bold; white-space: nowrap; font-size: 12px; }
+nav { display: flex; align-items: center; gap: 13px; font-size: 9px; }
+nav a:hover, footer a:hover { text-decoration: underline; }
+.nav-button { background: transparent; border: 0; color: var(--blue); }
+.page { display: none; }
+.page.active { display: block; }
+.shop { padding: 0 3.2%; }
+.page-title { text-align: center; font-size: 14px; margin: 0; padding: 0 0 24px; }
+.products {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 72px 28px;
+  padding: 18px 0 65px;
+}
+.product {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: white;
+  color: var(--blue);
+  text-align: left;
+}
+.product img {
+  display: block;
+  width: 100%;
+  height: 190px;
+  object-fit: contain;
+  background: #fff;
+}
+.product-info {
+  background: var(--yellow);
+  padding: 8px;
+  min-height: 45px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 9px;
+}
+.product-info strong { font-size: 10px; }
+.product:hover img { outline: 1px solid #e5d96e; }
+.yellow-band {
+  height: 93px;
+  background: var(--yellow);
+  margin: 0 -3.45%;
+}
+.about {
+  max-width: 820px;
+  padding: 25px 4% 55px;
+  margin: auto;
+}
+.about h1, .about h2 { text-align: center; }
+.about h1 { font-size: 14px; }
+.about h2 { font-size: 14px; margin: 25px 0; }
+.about p { font-size: 10px; line-height: 1.55; }
+footer {
+  background: var(--peach);
+  min-height: 105px;
+  padding: 25px 4%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  font-size: 8px;
+}
+footer b { display: block; margin-bottom: 10px; }
+footer a { display: block; margin: 7px 0; }
+.social { font-size: 15px; letter-spacing: 5px; }
+
+/* Product details */
+.detail { max-width: 1100px; padding: 30px 4% 50px; margin: auto; }
+.crumb { color: #777; font-size: 9px; margin-bottom: 20px; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 45px; }
+.hero-image {
+  height: 420px; background: #fffdf7;
+  display: grid; place-items: center; overflow: hidden;
+}
+.hero-image img { width: 100%; height: 100%; object-fit: contain; }
+.detail h1 { font-size: 25px; margin: 5px 0 10px; }
+.rating { color: #aa8500; margin: 12px 0; }
+.price { font-size: 23px; font-weight: bold; margin: 20px 0 10px; }
+.description { font-size: 11px; color: #595761; line-height: 1.8; }
+.detail label { display: block; font-weight: bold; margin: 22px 0 9px; }
+.sizes { display: flex; gap: 8px; flex-wrap: wrap; }
+.sizes button { background: white; border: 1px solid #bbb; padding: 10px 14px; }
+.sizes button.selected { border: 2px solid var(--blue); background: #f3f3ff; }
+.actions { display: flex; gap: 10px; margin-top: 25px; flex-wrap: wrap; }
+.actions button { padding: 13px 22px; border-radius: 3px; }
+.buy { background: var(--blue); color: white; border: 0; }
+.add { background: var(--yellow); border: 1px solid #e5d96e; }
+.benefits { color: #777; line-height: 2; margin-top: 20px; font-size: 10px; }
+.photo-upload { padding: 12px; margin-top: 15px; background: #faf9f7; }
+.photo-upload input { max-width: 100%; margin-top: 8px; }
+
+/* Shopping cart and checkout */
+.cart { max-width: 1150px; margin: auto; padding: 28px 3% 38px; }
+.cart-layout { display: grid; grid-template-columns: 1.25fr .8fr; gap: 30px; }
+.cart h1 { font-size: 19px; margin: 0 0 24px; }
+.cart-head, .cart-row {
+  display: grid;
+  grid-template-columns: 2fr .6fr .7fr .8fr 18px;
+  align-items: center; gap: 8px;
+}
+.cart-head { font-size: 8px; border-bottom: 1px solid #eee; padding-bottom: 12px; }
+.cart-row { padding: 14px 0; border-bottom: 1px solid #eee; font-size: 9px; }
+.cart-row input { width: 48px; padding: 4px; }
+.remove { background: transparent; border: 0; font-size: 16px; }
+.back { background: white; border: 1px solid #aaa; padding: 9px 20px; margin-top: 24px; }
+.summary { border: 1px solid #eee; padding: 18px; align-self: start; }
+.summary h2 { font-size: 15px; margin-top: 0; }
+.sum-line { display: flex; justify-content: space-between; margin: 15px 0; font-size: 10px; gap: 10px; }
+.sum-line.total { border-top: 1px solid #eee; padding-top: 15px; font-size: 13px; font-weight: bold; }
+.payment { background: var(--blue); color: white; padding: 18px; margin-top: 20px; }
+.payment h3 { margin-top: 0; font-size: 14px; }
+.payment p { line-height: 1.6; }
+.pay-button {
+  width: 100%; background: #00b9e5; color: white; border: 0;
+  padding: 12px; border-radius: 18px; margin-top: 12px;
+}
+.overlay {
+  position: fixed; inset: 0; display: none; align-items: center;
+  justify-content: center; background: #0007; padding: 15px; z-index: 20;
+}
+.overlay.open { display: flex; }
+.modal {
+  width: min(430px, 100%); max-height: 92vh; overflow: auto;
+  background: white; padding: 26px; position: relative;
+}
+.modal h2 { font-size: 18px; }
+.close { position: absolute; right: 12px; top: 9px; border: 0; background: none; font-size: 22px; }
+.modal label { display: block; margin: 13px 0 6px; font-size: 10px; }
+.modal input { width: 100%; border: 1px solid #ddd; padding: 11px; }
+.primary {
+  width: 100%; border: 0; padding: 12px; margin-top: 17px;
+  background: #00b9e5; color: white;
+}
+.notice {
+  position: fixed; left: 50%; bottom: 20px;
+  transform: translate(-50%, 100px); transition: .2s;
+  background: #191923; color: white; padding: 12px 18px; z-index: 40;
+}
+.notice.show { transform: translate(-50%, 0); }
+
+@media (max-width: 650px) {
+  header { flex-wrap: wrap; gap: 12px; }
+  .logo-center { display: none; }
+  nav { width: 100%; justify-content: space-between; gap: 5px; }
+  .products { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 30px 12px; }
+  .product img { height: 165px; }
+  .yellow-band { height: 65px; }
+  .detail-grid, .cart-layout { grid-template-columns: 1fr; }
+  .hero-image { height: 300px; }
+  footer { grid-template-columns: repeat(2,1fr); }
+  .cart-head, .cart-row { grid-template-columns: 1.4fr .55fr .65fr .75fr 16px; gap: 4px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="brand" href="#" onclick="showPage('men');return false">
+    <span class="brand-name">Leandroyarni<small>High quality jackets</small></span>
+    <span class="slogan">Wear it loud</span>
+  </a>
+  <a class="logo-center" href="#" onclick="showPage('men');return false">leather jackets</a>
+  <nav>
+    <a href="#" onclick="showPage('men');return false">Shop · Men</a>
+    <a href="#" onclick="showPage('women');return false">Women</a>
+    <a href="#" onclick="showPage('about');return false">About</a>
+    <a href="#" onclick="showPage('cart');return false">Cart <span id="count">(0)</span></a>
+    <button class="nav-button" onclick="showNotice('Choose a product to see its details')" aria-label="Search">⌕</button>
+    <button class="nav-button" onclick="showPage('cart')" aria-label="Shopping cart">🛒</button>
+  </nav>
+</header>
+
+<main>
+  <section class="page shop active" id="page-men">
+    <h1 class="page-title">Men</h1>
+    <div class="products" id="menGrid"></div>
+    <div class="yellow-band"></div>
+  </section>
+
+  <section class="page shop" id="page-women">
+    <h1 class="page-title">Women</h1>
+    <div class="products" id="womenGrid"></div>
+    <div class="yellow-band"></div>
+  </section>
+
+  <section class="page" id="page-about">
+    <div class="about">
+      <h1>About</h1>
+      <h2>"A wise man once said"</h2>
+      <p>Leandroyarni started with one simple belief: a leather jacket shouldn't be something you replace every year. It should be something you live in. Every jacket we pick is chosen for how it feels the first day you wear it and how it looks years later, after it has softened, creased, and shaped itself to you.</p>
+      <p>We keep our collection small on purpose. Instead of chasing trends, we focus on timeless cuts like the biker, the bomber, and the racer. We care about strong stitching, quality zips, and details that hold up to real life.</p>
+      <p>When you buy from Leandroyarni, you're not just buying a jacket. You're getting a piece that can become part of your story.</p>
+      <p>Wear it loud. Wear it for years.</p>
+    </div>
+    <div class="yellow-band"></div>
+  </section>
+
+  <section class="page" id="page-detail">
+    <div class="detail">
+      <div class="crumb"><a href="#" onclick="showPage(lastShop);return false">Shop</a> / <span id="crumb">Jacket</span></div>
+      <div class="detail-grid">
+        <div>
+          <div class="hero-image" id="heroImage"></div>
+          <div class="photo-upload">
+            <b>Optional: use your own photo</b><br>
+            <input type="file" id="photoUpload" accept="image/*" onchange="uploadPhoto(event)">
+            <button onclick="resetPhoto()">Reset photo</button>
+          </div>
+        </div>
+        <div>
+          <div class="crumb" id="category">LEATHER JACKET</div>
+          <h1 id="detailName"></h1>
+          <div class="rating">★★★★★ <span style="color:#777">Style collection</span></div>
+          <div class="price" id="detailPrice"></div>
+          <p class="description" id="detailDescription"></p>
+          <label>Choose size</label>
+          <div class="sizes" id="sizes"></div>
+          <div class="actions">
+            <button class="buy" onclick="buyNow()">Buy now</button>
+            <button class="add" onclick="addToCart()">Add to cart</button>
+          </div>
+          <div class="benefits">✓ Demo checkout<br>✓ Shipping calculated at checkout<br>✓ Payment provider needed for real orders</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page cart" id="page-cart">
+    <div class="cart-layout">
+      <div>
+        <h1>Shopping Cart</h1>
+        <div class="cart-head">
+          <span>Product</span><span>Size</span><span>Quantity</span><span>Total price</span><span></span>
+        </div>
+        <div id="cartRows"></div>
+        <button class="back" onclick="showPage(lastShop)">Back to shop</button>
+      </div>
+      <div class="summary">
+        <h2>Payment Info</h2>
+        <div id="summaryRows"></div>
+        <div class="payment">
+          <h3>Payment Info</h3>
+          <p>Demo checkout. A payment provider is not connected yet.</p>
+          <button class="pay-button" onclick="checkout()">Continue to delivery <span id="payTotal">$0.00</span></button>
+          <p style="font-size:8px;color:#ddd">No real payment is processed by this website.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div><b>Company</b><a href="#" onclick="showPage('about');return false">About us</a><a href="#" onclick="showNotice('FAQ coming soon');return false">FAQ</a><a href="#" onclick="showNotice('Add your contact details before launch');return false">Contact</a></div>
+  <div><b>Legal</b><a href="#" onclick="showNotice('Add your privacy policy before launch');return false">Privacy Policy</a><a href="#" onclick="showNotice('Add your terms before launch');return false">Terms and Conditions</a><a href="#" onclick="showNotice('Add your cookie policy before launch');return false">Cookie Policy</a></div>
+  <div><b>Help</b><a href="#" onclick="showNotice('Add shipping details before launch');return false">Shipping and Delivery</a><a href="#" onclick="showNotice('Add your returns policy before launch');return false">Returns Policy</a><a href="#" onclick="showNotice('Payment provider not connected');return false">Security and Payment</a></div>
+  <div><b>Social</b><span class="social">◎ 𝕏</span></div>
+</footer>
+
+<div class="overlay" id="checkoutOverlay" onclick="if(event.target===this)closeCheckout()">
+  <div class="modal">
+    <button class="close" onclick="closeCheckout()">×</button>
+    <h2>Delivery information</h2>
+    <p style="font-size:10px;line-height:1.6;color:#666">This is a demo. Do not enter card details. A secure payment provider and server must be connected before accepting real orders.</p>
+    <form onsubmit="event.preventDefault();completeOrder()">
+      <label>Email</label><input type="email" required placeholder="you@example.com">
+      <label>Full name</label><input required placeholder="Full name">
+      <label>Street address</label><input required placeholder="Street and house number">
+      <label>City and postal code</label><input required placeholder="City, postal code">
+      <button class="primary">Place demo order</button>
+    </form>
+  </div>
+</div>
+<div class="notice" id="notice" role="status"></div>
+
+<script>
+const products = [
+  {id:1,name:"Classic Black Biker Jacket",cat:"Men",price:14.99,type:"Biker",img:"https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=700&q=85"},
+  {id:2,name:"Brown Leather Jacket",cat:"Men",price:14.99,type:"Vintage",img:"https://images.unsplash.com/photo-1520975958225-5c6b4b6f2d3b?auto=format&fit=crop&w=700&q=85"},
+  {id:3,name:"Vintage Leather Jacket",cat:"Men",price:14.99,type:"Vintage",img:"https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=700&q=85"},
+  {id:4,name:"Black Bomber Jacket",cat:"Men",price:14.99,type:"Bomber",img:"https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=700&q=85"},
+  {id:5,name:"Women's Leather Biker",cat:"Women",price:14.99,type:"Biker",img:"https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=700&q=85"},
+  {id:6,name:"Brown Women's Jacket",cat:"Women",price:14.99,type:"Classic",img:"https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=700&q=85"},
+  {id:7,name:"Fitted Leather Jacket",cat:"Women",price:14.99,type:"Fitted",img:"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=700&q=85"},
+  {id:8,name:"Suede Style Jacket",cat:"Women",price:14.99,type:"Suede",img:"https://images.unsplash.com/photo-1548126032-079a0fb0099d?auto=format&fit=crop&w=700&q=85"}
+];
+
+let cart = {};
+let current = null;
+let selectedSize = "M";
+let lastShop = "men";
+let customPhotos = {};
+let noticeTimer;
+
+const money = amount => "$" + amount.toFixed(2);
+const photoFor = product => customPhotos[product.id] || product.img;
+
+function drawGrid(category, targetId) {
+  const list = products.filter(product => product.cat === category);
+  document.getElementById(targetId).innerHTML = list.map(product => `
+    <button class="product" onclick="openProduct(${product.id})" aria-label="View ${product.name}">
+      <img src="${photoFor(product)}" alt="${product.name}" loading="lazy"
+        onerror="this.onerror=null;this.src='https://placehold.co/500x600/fbf8e9/08084b?text=Leather+Jacket'">
+      <span class="product-info">
+        <span>${product.name}</span>
+        <strong>${money(product.price)}</strong>
+      </span>
+    </button>
+  `).join("");
+}
+
+function showPage(name) {
+  document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
+  document.getElementById("page-" + name).classList.add("active");
+  if (name === "cart") drawCart();
+  if (name === "men" || name === "women") lastShop = name;
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function openProduct(id) {
+  current = products.find(product => product.id === id);
+  selectedSize = "M";
+  document.getElementById("heroImage").innerHTML = `
+    <img src="${photoFor(current)}" alt="${current.name}"
+      onerror="this.onerror=null;this.src='https://placehold.co/500x600/fbf8e9/08084b?text=Leather+Jacket'">`;
+  document.getElementById("detailName").textContent = current.name;
+  document.getElementById("crumb").textContent = current.name;
+  document.getElementById("category").textContent = current.cat.toUpperCase() + " · " + current.type.toUpperCase();
+  document.getElementById("detailPrice").textContent = money(current.price);
+  document.getElementById("detailDescription").textContent =
+    "A timeless jacket inspired by classic leatherwear, designed for versatile everyday styling. These are illustrative stock-style photos, so verify the actual product, material, sizes, and price before selling.";
+  document.getElementById("sizes").innerHTML = ["XS","S","M","L","XL","XXL"].map(size => `
+    <button class="${size === selectedSize ? "selected" : ""}" onclick="chooseSize('${size}',this)">${size}</button>
+  `).join("");
+  document.getElementById("photoUpload").value = "";
+  showPage("detail");
+}
+
+function chooseSize(size, button) {
+  selectedSize = size;
+  document.querySelectorAll("#sizes button").forEach(item => item.classList.toggle("selected", item === button));
+}
+
+function uploadPhoto(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file || !current) return;
+  if (!file.type.startsWith("image/")) {
+    showNotice("Please choose an image file.");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    customPhotos[current.id] = reader.result;
+    document.getElementById("heroImage").innerHTML = `<img src="${reader.result}" alt="${current.name}">`;
+    drawGrid(current.cat, current.cat === "Men" ? "menGrid" : "womenGrid");
+    showNotice("Photo updated for this session.");
+  };
+  reader.readAsDataURL(file);
+}
+
+function resetPhoto() {
+  if (!current) return;
+  delete customPhotos[current.id];
+  document.getElementById("heroImage").innerHTML = `<img src="${current.img}" alt="${current.name}">`;
+  document.getElementById("photoUpload").value = "";
+  drawGrid(current.cat, current.cat === "Men" ? "menGrid" : "womenGrid");
+}
+
+function addToCart() {
+  if (!current) return;
+  const key = current.id + "-" + selectedSize;
+  cart[key] = (cart[key] || 0) + 1;
+  updateCount();
+  showNotice(current.name + " added to cart.");
+  showPage("cart");
+}
+
+function buyNow() {
+  if (!current) return;
+  const key = current.id + "-" + selectedSize;
+  cart[key] = (cart[key] || 0) + 1;
+  updateCount();
+  showPage("cart");
+  checkout();
+}
+
+function updateCount() {
+  const count = Object.values(cart).reduce((sum, quantity) => sum + quantity, 0);
+  document.getElementById("count").textContent = "(" + count + ")";
+}
+
+function drawCart() {
+  const rows = document.getElementById("cartRows");
+  const summary = document.getElementById("summaryRows");
+  const entries = Object.entries(cart).map(([key, quantity]) => {
+    const [id, size] = key.split("-");
+    return {product:products.find(item => item.id === Number(id)), size, quantity, key};
+  }).filter(entry => entry.product);
+
+  if (!entries.length) {
+    rows.innerHTML = '<p style="padding:25px 0">Your cart is empty. Select a jacket to get started.</p>';
+    summary.innerHTML = '<div class="sum-line"><span>Subtotal</span><b>$0.00</b></div>';
+    document.getElementById("payTotal").textContent = "$0.00";
+    return;
+  }
+
+  rows.innerHTML = entries.map(entry => `
+    <div class="cart-row">
+      <button style="border:0;background:none;text-align:left;padding:0" onclick="openProduct(${entry.product.id})">${entry.product.name}</button>
+      <span>${entry.size}</span>
+      <input type="number" min="1" value="${entry.quantity}" aria-label="Quantity"
+        onchange="setQuantity('${entry.key}',this.value)">
+      <span>${money(entry.product.price * entry.quantity)}</span>
+      <button class="remove" aria-label="Remove item" onclick="removeItem('${entry.key}')">×</button>
+    </div>
+  `).join("");
+
+  const subtotal = entries.reduce((sum, entry) => sum + entry.product.price * entry.quantity, 0);
+  const shipping = subtotal >= 50 ? 0 : 4.99;
+  const total = subtotal + shipping;
+
+  summary.innerHTML = `
+    <div class="sum-line"><span>Subtotal</span><b>${money(subtotal)}</b></div>
+    <div class="sum-line"><span>Shipping</span><b>${shipping ? money(shipping) : "Free"}</b></div>
+    <div class="sum-line"><span>Tax</span><span>Calculated later</span></div>
+    <div class="sum-line total"><span>Total</span><b>${money(total)}</b></div>
+  `;
+  document.getElementById("payTotal").textContent = money(total);
+}
+
+function setQuantity(key, value) {
+  cart[key] = Math.max(1, Math.floor(Number(value) || 1));
+  updateCount();
+  drawCart();
+}
+
+function removeItem(key) {
+  delete cart[key];
+  updateCount();
+  drawCart();
+}
+
+function checkout() {
+  if (!Object.keys(cart).length) {
+    showNotice("Your cart is empty.");
+    return;
+  }
+  document.getElementById("checkoutOverlay").classList.add("open");
+}
+
+function closeCheckout() {
+  document.getElementById("checkoutOverlay").classList.remove("open");
+}
+
+function completeOrder() {
+  closeCheckout();
+  cart = {};
+  updateCount();
+  drawCart();
+  showNotice("Demo order completed. No payment was taken.");
+}
+
+function showNotice(message) {
+  const notice = document.getElementById("notice");
+  notice.textContent = message;
+  notice.classList.add("show");
+  clearTimeout(noticeTimer);
+  noticeTimer = setTimeout(() => notice.classList.remove("show"), 2600);
+}
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeCheckout();
+});
+
+drawGrid("Men", "menGrid");
+drawGrid("Women", "womenGrid");
+updateCount();
+</script>
+</body>
+</html>
